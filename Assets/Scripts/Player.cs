@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
+    public Camera playerCam;
     public GameObject flagPoint;
     public eTeamColor teamColor;
     public float moveSpeed = 5f;
@@ -18,6 +20,15 @@ public class Player : MonoBehaviour
     Vector2 movement;
     Vector3 direction = Vector3.one;
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            //May change this to disable the camera later in order to have spectators after death
+            Destroy(playerCam.gameObject);
+            this.enabled = false;
+        }
+    }
 
     void Start()
     {

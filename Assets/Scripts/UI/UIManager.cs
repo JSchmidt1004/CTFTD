@@ -7,9 +7,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get => instance; }
 
-    static UIManager instance; 
+    static UIManager instance;
 
-    public Canvas HUD;
+    public MainMenu titleMenu;
+    public GameObject ingameHUD;
     public TMP_Text actionText;
 
     void Awake()
