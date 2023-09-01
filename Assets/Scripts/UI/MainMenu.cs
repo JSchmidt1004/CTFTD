@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    GameObject titleScreen;
-
+    public void StartGame()
+    {
+        UIManager.Instance.StartLoadSceneMenu("TestingScene");
+    }
     public void FindLobby()
     {
         Debug.Log("Finding Lobby");
+        StartGame();
     }
 
     public void Settings()
