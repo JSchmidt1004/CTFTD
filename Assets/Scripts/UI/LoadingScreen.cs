@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,26 +11,25 @@ public class LoadingScreen : MonoBehaviour
 
     [SerializeField]
     private Image backgroundImage;
+    [SerializeField, Range(0f, 10f)]
+    private float fadeInTime;
+    [SerializeField, Range(0f, 10f)]
+    private float fadeOutTime;
     private float progress;
 
-    public void FadeIn()
-    {
-        //Pre-set everything to blank screen before fade in
-        Progress = 0;
-        Color imageColor = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b, 0f);
-        backgroundImage.color = imageColor;
 
+    public async Task FadeIn()
+    {
+        Progress = 0;
+        backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.g, backgroundImage.color.b, 0f);
         gameObject.SetActive(true);
 
-        //Start fade in
-        imageColor.a = 1f;
-        backgroundImage.color = imageColor;
+        await backgroundImage.DOFade(1f, fadeInTime).AsyncWaitForCompletion();
     }
 
-    public void FadeOut()
+    public async void FadeOut()
     {
-        //Start fade out
-
+        await backgroundImage.DOFade(0f, fadeOutTime).AsyncWaitForCompletion();
         gameObject.SetActive(false);
     }
 

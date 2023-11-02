@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class FlagObject : MonoBehaviour
 {
-    public eTeamColor teamColor;
-    public Sprite sprite;
+    [SerializeField]
+    private eTeamColor teamColor;
+    [SerializeField]
+    private Sprite sprite;
+    [SerializeField]
+    private bool pickupAvailable;
+
+    private bool isCastle;
+
+    void Start()
+    {
+        isCastle = gameObject.TryGetComponent<Castle>(out Castle castle);
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        //Display pickup to player in range
-        if (collision.gameObject.TryGetComponent<Player>(out Player nearbyPlayer))
+        if (pickupAvailable)
         {
-            if (nearbyPlayer.teamColor != teamColor && !nearbyPlayer.hasFlag)
+            //Display pickup to player in range
+            if (collision.gameObject.TryGetComponent<Player>(out Player nearbyPlayer))
             {
-                UIManager.Instance.SetActionText("Steal Loot (E)");
-                nearbyPlayer.flagObject = this;
+                if (nearbyPlayer.teamColor != teamColor && !nearbyPlayer.hasFlag)
+                {
+                    UIManager.Instance.SetActionItem("Steal Loot (E)");
+                    nearbyPlayer.flagObject = this;
+                }
             }
         }
     }
@@ -27,9 +41,22 @@ public class FlagObject : MonoBehaviour
         {
             if (nearbyPlayer.teamColor != teamColor && !nearbyPlayer.hasFlag)
             {
-                UIManager.Instance.SetActionText("");
+                UIManager.Instance.SetActionItem("");
                 nearbyPlayer.flagObject = null;
             }
         }
+    }
+
+    public Sprite Pickup()
+    {
+        if (pickupAvailable)
+        {
+            if (!isCastle) gameObject.SetActive(false);
+
+            UIManager.Instance.SetActionItem("Drop Loot (E)");
+            return sprite;
+        }
+
+        return null;
     }
 }

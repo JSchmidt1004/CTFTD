@@ -1259,7 +1259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1296,6 +1296,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 1469057494}
+  fadeInTime: 0.75
+  fadeOutTime: 1
 --- !u!1 &1573738980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,9 +1416,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleMenu: {fileID: 1750459239}
-  ingameHUD: {fileID: 1629672529}
+  inGameHUD: {fileID: 1629672533}
   loadingScreen: {fileID: 1469057496}
-  actionText: {fileID: 1646118899}
 --- !u!1 &1608226511
 GameObject:
   m_ObjectHideFlags: 0
@@ -1561,6 +1562,7 @@ GameObject:
   - component: {fileID: 1629672530}
   - component: {fileID: 1629672532}
   - component: {fileID: 1629672531}
+  - component: {fileID: 1629672533}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -1626,6 +1628,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629672529}
   m_CullTransparentMesh: 1
+--- !u!114 &1629672533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629672529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21661e507d5449c43a0bfa002035ae0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionText: {fileID: 1646118899}
 --- !u!1 &1646118897
 GameObject:
   m_ObjectHideFlags: 0

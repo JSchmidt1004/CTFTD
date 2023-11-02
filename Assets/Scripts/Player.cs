@@ -22,6 +22,7 @@ public class Player : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        Destroy(Camera.main);
         if (!IsOwner)
         {
             //May change this to disable the camera later in order to have spectators after death
@@ -41,15 +42,7 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        //Movement
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
-        //Direction
-        if (movement.x < 0)
-            direction.x = -1;
-        else if (movement.x > 0)
-            direction.x = 1;
+        MoveAction();
 
         if (flagObject != null)
         {
@@ -93,18 +86,16 @@ public class Player : NetworkBehaviour
         if (flagPoint.TryGetComponent<SpriteRenderer>(out SpriteRenderer flagSprite))
         {
             //Set the flag color based on what flag we grabbed
+            hasFlag = true;
+            flagPoint.SetActive(hasFlag);
+
+            Sprite returnedFlagSprite = flagObject.Pickup();
+            if (returnedFlagSprite != null) flagSprite.sprite = returnedFlagSprite;
         }
-        hasFlag = true;
-        flagPoint.SetActive(hasFlag);
-
-        flagObject.gameObject.SetActive(false);
-
-        UIManager.Instance.SetActionText("Drop Loot (E)");
     }
 
     public void DropFlag()
     {
-
         flagObject.gameObject.transform.localPosition = transform.localPosition;
         flagObject.gameObject.transform.localScale = transform.localScale;
 
@@ -113,6 +104,26 @@ public class Player : NetworkBehaviour
 
         flagObject.gameObject.SetActive(true);
 
+    }
+
+    void MoveAction()
+    {
+        if (IsOwner)
+        {
+            //Movement
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            //Set movement based on Player Network stuff
+        }
+
+        //Direction
+        if (movement.x < 0)
+            direction.x = -1;
+        else if (movement.x > 0)
+            direction.x = 1;
     }
 
     void DevAction()

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Tutorials.Core.Editor;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -12,12 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private MainMenu titleMenu;
     [SerializeField]
-    private GameObject ingameHUD;
+    private InGameHud inGameHUD;
     [SerializeField]
     private LoadingScreen loadingScreen;
-    [SerializeField]
-    private TMP_Text actionText;
-
 
     void Awake()
     {
@@ -32,28 +31,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void SetActionItem(string actionText)
     {
-        if (actionText != null) actionText.text = "";
+        inGameHUD?.SetActionText(actionText);
     }
 
-
-    public void SetActionText(string message)
+    public async void StartLoadSceneMenu(string sceneName)
     {
-        if (actionText == null || message == null) return;
-        actionText.text = message;
-    }
-
-    public void StartLoadSceneMenu(string sceneName)
-    {
-        loadingScreen.FadeIn();
+        await loadingScreen.FadeIn();
 
         titleMenu.gameObject.SetActive(false);
-        ingameHUD.gameObject.SetActive(false);
-
-        //Wait a couple seconds
-        SceneLoadingManager.Instance.StartLoadScene("TestingScene");
-
+        inGameHUD.gameObject.SetActive(false);
+        
+        if (!sceneName.IsNullOrEmpty()) SceneLoadingManager.Instance.StartLoadScene(sceneName);
+        
         StartCoroutine(LoadingScreen());
     }
 
@@ -69,9 +60,8 @@ public class UIManager : MonoBehaviour
                 yield return null;
             }
 
-            Debug.Log("Fade Out");
             loadingScreen.FadeOut();
-            if (SceneLoadingManager.Instance?.ActiveScene.name == "TestingScene") ingameHUD.gameObject.SetActive(true);
+            if (SceneLoadingManager.Instance?.ActiveScene.name == "TestingScene") inGameHUD.gameObject.SetActive(true);
         }
 
         yield return null;

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else if (instance != this)
         {
@@ -26,17 +26,24 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        AddPlayersToTeams();
+    }
+
+    void AddPlayersToTeams()
+    {
         Player[] players = FindObjectsOfType<Player>();
 
         foreach (Player player in players)
         {
             if (teams.Any(team => team.teamColor == player.teamColor))
             {
+                //If matching team already exists, add player to team
                 TeamInfo teamInfo = teams.Where(team => team.teamColor == player.teamColor).FirstOrDefault();
                 teamInfo.players.Add(player);
             }
             else
             {
+                //Else create new team with player and add to team list
                 TeamInfo teamInfo = new TeamInfo();
                 teamInfo.teamColor = player.teamColor;
                 teamInfo.players.Add(player);
@@ -44,7 +51,6 @@ public class GameManager : MonoBehaviour
                 teams.Add(teamInfo);
             }
         }
-
     }
 
 }
